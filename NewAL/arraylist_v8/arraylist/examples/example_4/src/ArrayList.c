@@ -259,37 +259,6 @@ int al_clear(ArrayList* pList)
 
 
 
-/** \brief Returns an array containing all of the elements in this list in proper sequence
- * \param pList ArrayList* Pointer to arrayList
- * \return ArrayList* Return  (NULL) if Error [pList is NULL pointer]
- *                          - (New array) if Ok
- */
-ArrayList* al_clone(ArrayList* pList)
-{
-    ArrayList* returnAux = NULL;
-    void* aux=NULL;
-
-    if(pList!=NULL)
-    {
-
-        returnAux= al_newArrayList();
-
-        if(returnAux!=NULL)
-        {
-            for(int i=0;pList->len(pList);i++)
-            {
-            resizeUp(returnAux);
-            aux=pList->get(pList,i);
-            returnAux->add(returnAux,aux);
-            }
-        }
-    }
-
-    return returnAux;
-}
-
-
-
 
 /** \brief Inserts the element at the specified position
  * \param pList ArrayList* Pointer to arrayList
@@ -530,6 +499,56 @@ int al_sort(ArrayList* pList, int (*pFunc)(void* ,void*), int order)
 }
 
 
+/** \brief Returns an array containing all of the elements in this list in proper sequence
+ * \param pList ArrayList* Pointer to arrayList
+ * \return ArrayList* Return  (NULL) if Error [pList is NULL pointer]
+ *                          - (New array) if Ok
+ */
+ArrayList* al_clone(ArrayList* pList)
+{
+    ArrayList* returnAux = NULL;
+    //void* aux=NULL;
+
+    if(pList!=NULL)
+    {
+        returnAux= al_newArrayList();
+        if(returnAux!=NULL)
+        {
+            for(int i=0;i<pList->len(pList);i++)
+            {
+            //resizeUp(returnAux);
+            //aux=pList->get(pList,i);
+            al_add(returnAux,pList->pElements[i]);
+            }
+        }
+    }
+
+    return returnAux;
+}
+
+
+
+
+ArrayList* al_filter(ArrayList* pList, int(*filtro)(void*))
+{
+    ArrayList* returnAux=NULL;
+    if(pList!=NULL && filtro!=NULL)
+    {
+        returnAux=al_newArrayList();
+        for(int i=0;i<pList->len(pList);i++)
+        {
+
+            if(filtro(pList->pElements[i]))
+            {
+                returnAux->add(returnAux,pList->pElements[i]);
+
+            }
+        }
+    }
+    return returnAux;
+}
+
+
 /** \brief Increment the number of elements in pList in AL_INCREMENT elements.
  * \param pList ArrayList* Pointer to arrayList
  * \return int Return (-1) if Error [pList is NULL pointer or if can't allocate memory]
@@ -608,25 +627,5 @@ int contract(ArrayList* pList,int index)
         returnAux=0;
     }
 
-    return returnAux;
-}
-
-
-ArrayList* al_filter(ArrayList* pList, int(*filtro)(void*))
-{
-    ArrayList* returnAux=NULL;
-    if(pList!=NULL && filtro!=NULL)
-    {
-        returnAux=al_newArrayList();
-        for(int i=0;i<pList->len(pList);i++)
-        {
-
-            if(filtro(pList->pElements[i]))
-            {
-                returnAux->add(returnAux,pList->pElements[i]);
-
-            }
-        }
-    }
     return returnAux;
 }
